@@ -12,22 +12,22 @@ cdef int MAX_ITERATIONS = 200
 cdef double  CONVERGENCE_THRESHOLD = 1e-12  # .000,000,000,001
 
 
-cpdef np.ndarray[np.float_t, ndim=2] vincenty_cross(
-        np.ndarray[np.float_t] ax,
-        np.ndarray[np.float_t] ay,
-        np.ndarray[np.float_t] bx,
-        np.ndarray[np.float_t] by):
+cpdef np.ndarray[np.float32_t, ndim=2] vincenty_cross(
+        np.ndarray[np.float32_t] ax,
+        np.ndarray[np.float32_t] ay,
+        np.ndarray[np.float32_t] bx,
+        np.ndarray[np.float32_t] by):
     """
     Calculates vincenty distance for each pair of longitude/latitude points in
     vectors a (ax, bx) and b (bx, by) using vincenty method. Uses WGS84.
     
-    Arguments must be 1-D numpy arrays.
+    Arguments must be 1-D numpy arrays (float32).
 
     Returns numpy array of shape (len(a), len(b)).
     """
     cdef int I = ax.shape[0]
     cdef int J = bx.shape[0]
-    cdef np.ndarray[np.float_t, ndim=2] out = np.zeros((I, J))
+    cdef np.ndarray[np.float32_t, ndim=2] out = np.zeros((I, J), dtype=np.float32)
     cdef int i, j
 
     try:
@@ -37,6 +37,8 @@ cpdef np.ndarray[np.float_t, ndim=2] vincenty_cross(
         raise ValueError("Input x/y vectors must be same length.")
 
     for i in range(I):
+        if i % 1000 == 0:
+            print(i)
         this_ax = ax[i]
         this_ay = ay[i]
         for j in range(J):
