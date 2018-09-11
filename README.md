@@ -46,10 +46,12 @@ dist_km = vincenty_cross(x1, y1, x2, y2)
 
 Just clone the repository and run
 
-```
-python setup.py install
+```console
+$ python setup.py install
 ```
 
 If you're using Windows, you will need to jump through the necessary hoops so
-Python can find your C compiler. If you're using Visual Studio, 
-the easiest route is to run `setup.py` in a Visual Studio Developer console.
+Python can find your C compiler. Installing Visual Studio is the most
+straightforward route, but make sure you install the C/C++ command line
+interface (CLI) tools! If you're using Visual Studio, the easiest route is to
+run `setup.py` in a Visual Studio Developer console.
