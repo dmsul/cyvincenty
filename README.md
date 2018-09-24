@@ -2,7 +2,9 @@
 
 `cyvincenty` is a simple [Cython](https://github.com/cython/cython)
 implementation of Vincenty's inverse formula to find the distance between two
-latitude-longitude points.
+latitude-longitude points. Rough testing shows that `cyvincenty` is 1000 to
+2000 times faster than ArcPy 10.3 (`cyvincenty` calculates 1000 distances in
+.0016 seconds vs. ArcPy's 3.2 seconds).
 
 This package contains two functions, `vincenty` and `vincenty_cross`.
 
