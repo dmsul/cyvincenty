@@ -1,6 +1,10 @@
 import numpy as np
 cimport numpy as np
 
+import cython
+
+from cython.parallel import prange
+
 from libc.math cimport sin, cos, tan, atan, sqrt, atan2, pi
 
 # WGS 84
@@ -12,7 +16,9 @@ cdef int MAX_ITERATIONS = 200
 cdef double  CONVERGENCE_THRESHOLD = 1e-12  # .000,000,000,001
 
 
-cpdef np.ndarray[np.float32_t, ndim=2] vincenty_cross(
+@cython.wraparound(False)
+@cython.boundscheck(False)
+def vincenty_cross(
         np.ndarray[np.float32_t] ax,
         np.ndarray[np.float32_t] ay,
         np.ndarray[np.float32_t] bx,
@@ -20,7 +26,7 @@ cpdef np.ndarray[np.float32_t, ndim=2] vincenty_cross(
     """
     Calculates vincenty distance for each pair of longitude/latitude points in
     vectors a (ax, bx) and b (bx, by) using vincenty method. Uses WGS84.
-    
+
     Arguments must be 1-D numpy arrays (float32).
 
     Returns numpy array of shape (len(a), len(b)).
@@ -30,15 +36,15 @@ cpdef np.ndarray[np.float32_t, ndim=2] vincenty_cross(
     cdef np.ndarray[np.float32_t, ndim=2] out = np.zeros((I, J), dtype=np.float32)
     cdef int i, j
 
+    cdef float this_ax, this_ay, this_bx, this_by
+
     try:
         assert I == ay.shape[0]
         assert J == by.shape[0]
     except AssertionError:
         raise ValueError("Input x/y vectors must be same length.")
 
-    for i in range(I):
-        if i % 1000 == 0:
-            print(i)
+    for i in prange(I, nogil=True):
         this_ax = ax[i]
         this_ay = ay[i]
         for j in range(J):
@@ -49,7 +55,10 @@ cpdef np.ndarray[np.float32_t, ndim=2] vincenty_cross(
     return out
 
 
-cpdef double vincenty(double ax, double ay, double bx, double by):
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cpdef float vincenty(double ax, double ay, double bx, double by) nogil:
     """
     Calculates the distance in kilometers between longitude/latitude points a
     (ax, bx) and b (bx, by) using vincenty method. Uses WGS84.
@@ -138,5 +147,6 @@ cpdef double vincenty(double ax, double ay, double bx, double by):
     return s
 
 
-cdef double radians(double x):
+@cython.cdivision(True)
+cdef double radians(double x) nogil:
     return x * pi / 180
