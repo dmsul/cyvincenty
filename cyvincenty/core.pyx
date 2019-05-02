@@ -37,8 +37,6 @@ cpdef np.ndarray[np.float32_t, ndim=2] vincenty_cross(
         raise ValueError("Input x/y vectors must be same length.")
 
     for i in range(I):
-        if i % 1000 == 0:
-            print(i)
         this_ax = ax[i]
         this_ay = ay[i]
         for j in range(J):
