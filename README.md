@@ -1,5 +1,7 @@
 # cy-vincenty
 
+**Update** [May 2019]: `cyvincenty` now uses multiple cores by default.
+
 `cyvincenty` is a simple [Cython](https://github.com/cython/cython)
 implementation of Vincenty's inverse formula to find the distance between two
 latitude-longitude points. Rough testing shows that `cyvincenty` is 1000 to
