@@ -24,8 +24,9 @@ def vincenty_cross(
         np.ndarray[np.float32_t] bx,
         np.ndarray[np.float32_t] by):
     """
-    Calculates vincenty distance for each pair of longitude/latitude points in
-    vectors a (ax, bx) and b (bx, by) using vincenty method. Uses WGS84.
+    Calculates vincenty distance in kilometers for each pair of
+    longitude/latitude points in vectors a (ax, bx) and b (bx, by) using
+    vincenty method. Uses WGS84.
 
     Arguments must be 1-D numpy arrays (float32).
 
